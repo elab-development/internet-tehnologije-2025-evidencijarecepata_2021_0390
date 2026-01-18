@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recepts', function (Blueprint $table) {
+        Schema::create('recepti', function (Blueprint $table) {
             $table->id(); // recept_id
             $table->string('naziv');
             $table->text('opis');
             $table->string('kategorija');
             $table->string('putanja_slike')->nullable();
-            $table->enum('status', ['na_cekanju', 'odobren'])->default('na_cekanju');
+            $table->enum('status', ['na_cekanju', 'odobren', 'odbijen'])->default('na_cekanju');
             $table->foreignId('korisnik_id')->constrained('korisnici')->onDelete('cascade');
             $table->timestamps(); // kreirano i promenjeno
         });
