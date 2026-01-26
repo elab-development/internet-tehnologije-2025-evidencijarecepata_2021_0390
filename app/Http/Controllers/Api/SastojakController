@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Sastojak;
 use Illuminate\Http\Request;
 
+
 class SastojakController extends Controller
 {
     // Prikaz svih sastojaka (public ruta)
