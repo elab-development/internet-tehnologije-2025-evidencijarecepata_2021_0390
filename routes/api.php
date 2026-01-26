@@ -12,14 +12,14 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // --- RECEPT ROUTES ---
-Route::get('/recepati', [ReceptController::class, 'index']);
-Route::get('/recepati/{id}', [ReceptController::class, 'show']);
+Route::get('/recepti', [ReceptController::class, 'index']);
+Route::get('/recepti/{id}', [ReceptController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/recepati', [ReceptController::class, 'store']); //amater + profesionalac
-    Route::put('/recepati/{id}', [ReceptController::class, 'update']); // vlasnik recepta
-    Route::delete('/recepati/{id}', [ReceptController::class, 'destroy']); // vlasnik recepta
-    Route::post('/recepati/{id}/potvrda', [ReceptController::class, 'potvrdi']); //profesionalac
+    Route::post('/recepti', [ReceptController::class, 'store']); //amater + profesionalac
+    Route::put('/recepti/{id}', [ReceptController::class, 'update']); // vlasnik recepta
+    Route::delete('/recepti/{id}', [ReceptController::class, 'destroy']); // vlasnik recepta
+    Route::post('/recepti/{id}/potvrda', [ReceptController::class, 'potvrdi']); //profesionalac
 });
 
 // --- SASTOJAK ROUTES ---
