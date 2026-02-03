@@ -19,13 +19,16 @@ class SastojakController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'naziv' => 'required|string|max:255',
-            'dostupno' => 'required|boolean',
+            'ime' => 'required|string|max:255',
+            'kolicina'=> 'required|string|max:255',
+            'recept_id'=> 'required|exists|recepti,id'
         ]);
 
         $sastojak = Sastojak::create([
-            'naziv' => $request->naziv,
-            'dostupno' => $request->dostupno,
+            'ime' => $request->ime,
+            'kolicina' => $request->kolicina,
+            'recept_id'=> $request->recept_id,
+            'dostupno' => $request->dostupno ?? true
         ]);
 
         return response()->json($sastojak, 201);

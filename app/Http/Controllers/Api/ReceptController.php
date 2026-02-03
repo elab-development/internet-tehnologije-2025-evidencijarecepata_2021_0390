@@ -29,8 +29,10 @@ class ReceptController extends Controller
         $recept = Recept::create([
             'naziv' => $request->naziv,
             'opis' => $request->opis,
+            'kategorija' => $request->kategorija,
+            'putanja_slike' => $request->putanja_slike ?? null,
             'korisnik_id' => $user->id,
-            'status' => 'na cekanju',
+            'status' => 'na_cekanju',
         ]);
 
         return response()->json($recept, 201);

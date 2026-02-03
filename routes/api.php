@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ReceptController;
+use App\Http\Controllers\Api\SastojakController;
 
 // --- AUTH ROUTES ---
 Route::post('/register', [AuthController::class, 'register']);
