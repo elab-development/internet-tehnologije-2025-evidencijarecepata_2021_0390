@@ -20,7 +20,7 @@ function Login() {
         const result = await login(email, lozinka);
 
         if (result.success) {
-            navigate('/');
+            navigate('/recepti');
         } else {
             setError(result.error || 'Pogrešan email ili lozinka');
         }
@@ -73,6 +73,11 @@ function Login() {
                     Nemate nalog?{' '}
                     <Link to="/register" className="text-blue-500 hover:underline">
                         Registrujte se
+                    </Link>
+                </p>
+                <p className="mt-2 text-center">
+                    <Link to="/" className="text-gray-500 hover:underline">
+                        ← Nazad na početnu
                     </Link>
                 </p>
             </div>

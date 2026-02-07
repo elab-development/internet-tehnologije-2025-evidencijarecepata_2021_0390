@@ -71,6 +71,19 @@ function Home() {
     const filteredRecepti = recepti.filter(recept => {
         const matchesSearch = recept.naziv.toLowerCase().includes(search.toLowerCase());
         const matchesStatus = filterStatus === 'svi' || recept.status === filterStatus;
+
+        // Odbijeni recepti - vidljivi samo vlasniku i profesionalcu
+        if (recept.status === 'odbijen') {
+            if (!user) return false;
+            if (user.tip !== 'profesionalac' && user.id !== recept.korisnik_id) return false;
+        }
+
+    // Recepti na čekanju - vidljivi samo vlasniku i profesionalcu
+    if (recept.status === 'na_cekanju') {
+        if (!user) return false;
+        if (user.tip !== 'profesionalac' && user.id !== recept.korisnik_id) return false;
+    }
+
         return matchesSearch && matchesStatus;
     });
 

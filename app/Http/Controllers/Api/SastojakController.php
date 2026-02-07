@@ -21,7 +21,7 @@ class SastojakController extends Controller
         $request->validate([
             'ime' => 'required|string|max:255',
             'kolicina'=> 'required|string|max:255',
-            'recept_id'=> 'required|exists|recepti,id'
+            'recept_id'=> 'required|exists:recepti,id'
         ]);
 
         $sastojak = Sastojak::create([

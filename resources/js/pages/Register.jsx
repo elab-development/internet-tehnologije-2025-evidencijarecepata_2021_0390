@@ -23,7 +23,7 @@ function Register() {
         const result = await register(ime, email, lozinka, tip);
 
         if (result.success) {
-            navigate('/');
+            navigate('/recepti');
         } else {
             setErrors(result.errors || { general: 'Greška pri registraciji' });
         }
@@ -104,6 +104,11 @@ function Register() {
                     Već imate nalog?{' '}
                     <Link to="/login" className="text-blue-500 hover:underline">
                         Prijavite se
+                    </Link>
+                </p>
+                <p className="mt-2 text-center">
+                    <Link to="/" className="text-gray-500 hover:underline">
+                        ← Nazad na početnu
                     </Link>
                 </p>
             </div>

@@ -4,6 +4,36 @@ import { useAuth } from '../context/AuthContext';
 import Button from '../components/button';
 import Modal from '../components/Modal';
 
+function SastojakItem({ sastojak }) {
+    const [naruceno, setNaruceno] = useState(false);
+
+    const handleNaruci = () => {
+        if (sastojak.dostupno) {
+            setNaruceno(true);
+        }
+    };
+
+    return (
+        <div className="flex items-center justify-between bg-gray-50 p-3 rounded">
+            <span className="text-gray-700">{sastojak.ime} - {sastojak.kolicina}</span>
+            <div>
+                {naruceno ? (
+                    <span className="text-green-600 font-medium">Naručeno ✓</span>
+                ) : sastojak.dostupno ? (
+                    <button
+                        onClick={handleNaruci}
+                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    >
+                        Naruči
+                    </button>
+                ) : (
+                    <span className="text-red-500 font-medium">Nije dostupno</span>
+                )}
+            </div>
+        </div>
+    );
+}
+
 function RecipeDetail() {
     const [recept, setRecept] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -24,11 +54,11 @@ function RecipeDetail() {
                 const data = await response.json();
                 setRecept(data);
             } else {
-                navigate('/');
+                navigate('/recepti');
             }
         } catch (error) {
             console.error('Greška pri dohvatanju recepta:', error);
-            navigate('/');
+            navigate('/recepti');
         } finally {
             setLoading(false);
         }
@@ -43,7 +73,7 @@ function RecipeDetail() {
                     'Accept': 'application/json',
                 },
             });
-            navigate('/');
+            navigate('/recepti');
         } catch (error) {
             console.error('Greška pri brisanju:', error);
         }
@@ -85,7 +115,7 @@ function RecipeDetail() {
 
     return (
         <div className="max-w-3xl mx-auto">
-            <Button variant="secondary" onClick={() => navigate('/')}>
+            <Button variant="secondary" onClick={() => navigate('/recepti')}>
                 ← Nazad
             </Button>
 
@@ -111,16 +141,11 @@ function RecipeDetail() {
                 {recept.sastojci && recept.sastojci.length > 0 && (
                     <div className="mb-6">
                         <h2 className="text-xl font-semibold mb-2">Sastojci</h2>
-                        <ul className="list-disc list-inside">
+                        <div className="space-y-2">
                             {recept.sastojci.map(sastojak => (
-                                <li key={sastojak.id} className="text-gray-700">
-                                    {sastojak.ime} - {sastojak.kolicina}
-                                    {!sastojak.dostupno && (
-                                        <span className="text-red-500 ml-2">(nedostupno)</span>
-                                    )}
-                                </li>
+                                <SastojakItem key={sastojak.id} sastojak={sastojak} />
                             ))}
-                        </ul>
+                        </div>
                     </div>
                 )}
 

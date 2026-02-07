@@ -15,7 +15,7 @@ class ReceptController extends Controller
 
     public function show($id)
     {
-        return response()->json(Recept::findOrFail($id));
+        return response()->json(Recept::with('sastojci')->findOrFail($id));
     }
 
     public function store(Request $request)

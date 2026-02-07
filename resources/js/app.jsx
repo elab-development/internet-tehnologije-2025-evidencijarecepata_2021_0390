@@ -9,6 +9,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import RecipeDetail from './pages/RecipeDetail';
+import AddRecipe from './pages/AddRecipe';
+import Landing from './pages/Landing';
+import Dobavljac from './pages/Dobavljac';
 
 // Components
 import Navbar from './components/Navbar';
@@ -23,10 +26,13 @@ function App() {
                 <Navbar />
                 <main className="container mx-auto px-4 py-8">
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={<Landing />} />
+                        <Route path="/recepti" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path="/dodaj-recept" element={<AddRecipe />} />
                         <Route path="/recepti/:id" element={<RecipeDetail />} />
+                        <Route path="/dobavljac" element={<Dobavljac />} />
                     </Routes>
                 </main>
             </BrowserRouter>
