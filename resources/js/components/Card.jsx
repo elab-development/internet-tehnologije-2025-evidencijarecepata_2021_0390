@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Button from './button';
+import Button from './Button';
 
 function Card({ id, naziv, opis, kategorija, status }) {
     const statusBoje = {

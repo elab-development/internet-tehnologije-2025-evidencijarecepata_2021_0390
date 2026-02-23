@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Modal from './Modal';                                                                                                                                                              import { useAuth } from '../context/AuthContext';
-import Button from './button';
+import Button from './Button';
 
 function Navbar() {
     const [logoutModal, setLogoutModal] = useState(false);

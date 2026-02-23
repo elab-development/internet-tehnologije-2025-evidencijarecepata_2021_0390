@@ -1,4 +1,4 @@
-import Button from './button';                                                                                                                                                                                  
+import Button from './Button';                                                                                                                                                                                  
   
 function Modal({ isOpen, onClose, title, children, onConfirm, confirmText = 'Potvrdi' }) {                                                                                                                            if (!isOpen) return null;
 

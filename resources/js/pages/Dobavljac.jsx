@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import Button from '../components/button';
+import Button from '../components/Button';
 
 function Dobavljac() {
     const [sastojci, setSastojci] = useState([]);
