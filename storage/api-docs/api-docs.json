@@ -1,0 +1,635 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Evidencija Recepata API",
+        "description": "REST API za upravljanje receptima, sastojcima i korisnicima.",
+        "contact": {
+            "email": "admin@evidencijarecepata.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Glavni server"
+        }
+    ],
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Autentifikacija"
+                ],
+                "summary": "Registracija novog korisnika",
+                "operationId": "8e4e3cb7b46126f4696379d3c7eeb4ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ime",
+                                    "email",
+                                    "lozinka",
+                                    "tip"
+                                ],
+                                "properties": {
+                                    "ime": {
+                                        "type": "string",
+                                        "example": "Marko Marković"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "marko@email.com"
+                                    },
+                                    "lozinka": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "tajna123"
+                                    },
+                                    "tip": {
+                                        "type": "string",
+                                        "enum": [
+                                            "amater",
+                                            "profesionalac",
+                                            "dobavljac"
+                                        ],
+                                        "example": "amater"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Uspešna registracija",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Uspešna registracija"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abc123..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validaciona greška"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autentifikacija"
+                ],
+                "summary": "Prijava korisnika",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "lozinka"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "marko@email.com"
+                                    },
+                                    "lozinka": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "tajna123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Uspešna prijava",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Uspešna prijava"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abc123..."
+                                        },
+                                        "korisnik": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Pogrešni kredencijali"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autentifikacija"
+                ],
+                "summary": "Odjava korisnika",
+                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "responses": {
+                    "200": {
+                        "description": "Uspešna odjava",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Uspešno ste se izlogovali"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Neautorizovan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/recepti": {
+            "get": {
+                "tags": [
+                    "Recepti"
+                ],
+                "summary": "Lista svih recepata",
+                "operationId": "0f1c5398524ccaa2e5d0d8d866c6437f",
+                "responses": {
+                    "200": {
+                        "description": "Uspešno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Recepti"
+                ],
+                "summary": "Kreiranje novog recepta (amater ili profesionalac)",
+                "operationId": "79631c89e287bd2abe180ada6ced9235",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "naziv",
+                                    "opis",
+                                    "kategorija"
+                                ],
+                                "properties": {
+                                    "naziv": {
+                                        "type": "string",
+                                        "example": "Pasulj"
+                                    },
+                                    "opis": {
+                                        "type": "string",
+                                        "example": "Domaći pasulj sa dimljenim mesom"
+                                    },
+                                    "kategorija": {
+                                        "type": "string",
+                                        "example": "supe"
+                                    },
+                                    "putanja_slike": {
+                                        "type": "string",
+                                        "example": "slike/pasulj.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recept kreiran"
+                    },
+                    "403": {
+                        "description": "Zabranjen pristup"
+                    },
+                    "401": {
+                        "description": "Neautorizovan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/recepti/{id}": {
+            "get": {
+                "tags": [
+                    "Recepti"
+                ],
+                "summary": "Detalji jednog recepta sa sastojcima",
+                "operationId": "75e134aebbb0cf1ff17770597acae5f0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspešno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recept nije pronađen"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Recepti"
+                ],
+                "summary": "Izmena recepta (samo vlasnik)",
+                "operationId": "489b86514542754ad104de8ce2ae6c17",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "naziv": {
+                                        "type": "string",
+                                        "example": "Novi naziv"
+                                    },
+                                    "opis": {
+                                        "type": "string",
+                                        "example": "Novi opis"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recept izmenjen"
+                    },
+                    "403": {
+                        "description": "Zabranjen pristup"
+                    },
+                    "404": {
+                        "description": "Recept nije pronađen"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Recepti"
+                ],
+                "summary": "Brisanje recepta (samo vlasnik)",
+                "operationId": "058693126d6d931f01489143a832c538",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recept obrisan"
+                    },
+                    "403": {
+                        "description": "Zabranjen pristup"
+                    },
+                    "404": {
+                        "description": "Recept nije pronađen"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/recepti/{id}/potvrda": {
+            "post": {
+                "tags": [
+                    "Recepti"
+                ],
+                "summary": "Potvrda ili odbijanje recepta (samo profesionalac)",
+                "operationId": "a0316e308ceeed9a6fc252699fcf14c9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "potvrdjen",
+                                            "odbijen"
+                                        ],
+                                        "example": "potvrdjen"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Status recepata izmenjen"
+                    },
+                    "403": {
+                        "description": "Zabranjen pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "api/sastojci/": {
+            "get": {
+                "tags": [
+                    "Sastojci"
+                ],
+                "summary": "Lista svih sastojaka",
+                "operationId": "6b682ad9a4f7ee849453704eba855802",
+                "responses": {
+                    "200": {
+                        "description": "Uspešno",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sastojci": {
+            "post": {
+                "tags": [
+                    "Sastojci"
+                ],
+                "summary": "Kreiranje novog sastojka",
+                "operationId": "93295e54c381d3c633f0fb6a1b13dc09",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ime",
+                                    "kolicina",
+                                    "recept_id"
+                                ],
+                                "properties": {
+                                    "ime": {
+                                        "type": "string",
+                                        "example": "Brašno"
+                                    },
+                                    "kolicina": {
+                                        "type": "string",
+                                        "example": "500g"
+                                    },
+                                    "recept_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "dostupno": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Sastojak kreiran"
+                    },
+                    "422": {
+                        "description": "Validaciona greška"
+                    },
+                    "401": {
+                        "description": "Neautorizovan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/sastojci/{id}": {
+            "delete": {
+                "tags": [
+                    "Sastojci"
+                ],
+                "summary": "Brisanje sastojka",
+                "operationId": "e728b4c5d7fe6a0f76942d9efec31318",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sastojak obrisan"
+                    },
+                    "404": {
+                        "description": "Sastojak nije pronađen"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/sastojci/{id}/dostupno": {
+            "put": {
+                "tags": [
+                    "Sastojci"
+                ],
+                "summary": "Izmena dostupnosti sastojka (samo dobavljač)",
+                "operationId": "6b6a2f1ed44f81a82e5a7d6a13ddf024",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "dostupno"
+                                ],
+                                "properties": {
+                                    "dostupno": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Dostupnost izmenjena"
+                    },
+                    "403": {
+                        "description": "Zabranjen pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Unesi token dobijen pri registraciji/prijavi",
+                "bearerFormat": "Token",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autentifikacija",
+            "description": "Registracija, prijava i odjava"
+        },
+        {
+            "name": "Recepti",
+            "description": "CRUD operacije nad receptima"
+        },
+        {
+            "name": "Sastojci",
+            "description": "Upravljanje sastojcima"
+        }
+    ]
+}
